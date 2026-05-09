@@ -5,7 +5,6 @@ import CommitChart from "./components/CommitChart";
 import PRMetrics from "./components/PRMetrics";
 import styles from "./Dashboard.module.css";
 
-// Never hardcode localhost — set VITE_API_URL in your .env file
 const API = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 function Dashboard() {
@@ -72,7 +71,77 @@ function Dashboard() {
     setSelectedRepo(repo);
   };
 
-  // ── Loading state ─────────────────────────────────────────────────────────
+  const statIcons = {
+    repos: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+      </svg>
+    ),
+    followers: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    ),
+    following: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 12a4 4 0 100-8 4 4 0 000 8z" />
+        <path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+        <path d="M19 11v6" />
+        <path d="M16 14h6" />
+      </svg>
+    ),
+    gists: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" />
+        <path d="M14 2v6h6" />
+        <path d="M10 13h4" />
+        <path d="M10 17h4" />
+      </svg>
+    ),
+  };
+
+  // Loading state
   if (loading) {
     return (
       <div className={styles.centerScreen}>
@@ -82,7 +151,7 @@ function Dashboard() {
     );
   }
 
-  // ── Error state ───────────────────────────────────────────────────────────
+  // error state
   if (error) {
     return (
       <div className={styles.centerScreen}>
@@ -97,14 +166,31 @@ function Dashboard() {
     );
   }
 
-  // ── Dashboard ─────────────────────────────────────────────────────────────
+  // dashboard view
   return (
     <div className={styles.container}>
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.logo}>
-            <span className={styles.logoIcon}>📊</span>
+            <span className={styles.logoIcon}>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 19h16" />
+                <path d="M4 14h10" />
+                <path d="M4 9h16" />
+                <path d="M4 4h6" />
+              </svg>
+            </span>
             <span className={styles.logoText}>DevPulse</span>
           </div>
           <button onClick={handleLogout} className={styles.logoutButton}>
@@ -146,16 +232,33 @@ function Dashboard() {
                 <p className={styles.profileBio}>{userData.bio}</p>
               )}
               {userData?.location && (
-                <p className={styles.profileMeta}>📍 {userData.location}</p>
+                <p className={styles.profileMeta}>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                    style={{ marginRight: "6px", verticalAlign: "middle" }}
+                  >
+                    <path d="M12 21s-6-5.333-6-10a6 6 0 1112 0c0 4.667-6 10-6 10z" />
+                    <circle cx="12" cy="11" r="2" />
+                  </svg>
+                  {userData.location}
+                </p>
               )}
             </div>
           </div>
 
           <div className={styles.statsGrid}>
-            <StatCard icon="📦" value={userData?.public_repos ?? 0} label="Repositories" />
-            <StatCard icon="👥" value={userData?.followers ?? 0} label="Followers" />
-            <StatCard icon="🔔" value={userData?.following ?? 0} label="Following" />
-            <StatCard icon="⭐" value={userData?.public_gists ?? 0} label="Gists" />
+            <StatCard icon={statIcons.repos} value={userData?.public_repos ?? 0} label="Repositories" />
+            <StatCard icon={statIcons.followers} value={userData?.followers ?? 0} label="Followers" />
+            <StatCard icon={statIcons.following} value={userData?.following ?? 0} label="Following" />
+            <StatCard icon={statIcons.gists} value={userData?.public_gists ?? 0} label="Gists" />
           </div>
         </section>
 
@@ -185,7 +288,7 @@ function Dashboard() {
   );
 }
 
-// Small reusable stat card — no need for a separate file
+// reusable stat card component
 function StatCard({ icon, value, label }) {
   return (
     <div className={styles.statCard}>

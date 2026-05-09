@@ -42,18 +42,14 @@ function Callback() {
         const data = await response.json();
         console.log("Response from backend:", data);
 
-        if (data.access_token) {
-          localStorage.setItem("github_token", data.access_token);
-          setStatus("success");
-          setMessage("Authentication successful!");
-
-          setTimeout(() => {
-            navigate("/dashboard");
-          }, 1500);
-        } else {
-          setStatus("error");
-          setMessage("No access token received");
-        }
+        if (data.success) {
+        setStatus("success");
+        setMessage("Authentication successful!");
+        setTimeout(() => navigate("/dashboard"), 5000);
+      } else {
+        setStatus("error");
+        setMessage(data.error || "No access token received");
+      }
       } catch (error) {
         console.error("Error:", error);
         setStatus("error");

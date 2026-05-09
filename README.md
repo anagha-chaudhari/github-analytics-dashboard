@@ -1,1 +1,1 @@
-# multi-tenant-analytics
+# github analytics dashboard

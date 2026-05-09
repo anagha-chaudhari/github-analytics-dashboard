@@ -1,46 +1,53 @@
 import { useState, useEffect } from "react";
 
-function RepoList({ token, onSelectRepo }) {
+function RepoList({ onSelectRepo }) {
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRepos = async () => {
       try {
-        console.log("🔄 Fetching repos...");
+        console.log("🔄 Fetching repositories...");
 
-        const response = await fetch("http://localhost:3001/api/github/repos", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "http://localhost:3001/api/github/repos",
+          {
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch repos");
+          throw new Error("Failed to fetch repositories");
         }
 
         const data = await response.json();
-        console.log("✅ Repos:", data);
+
+        console.log("✅ Repositories:", data);
+
         setRepos(data);
       } catch (error) {
-        console.error("❌ Error:", error);
+        console.error("❌ Error fetching repositories:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (token) {
-      fetchRepos();
-    }
-  }, [token]);
+    fetchRepos();
+  }, []);
 
+  // Loading state
   if (loading) {
-    return <div>Loading repos...</div>;
+    return (
+      <div style={{ marginTop: "30px", textAlign: "center" }}>
+        Loading repositories...
+      </div>
+    );
   }
 
   return (
     <div style={{ marginTop: "30px" }}>
       <h2>📚 Your Repositories</h2>
+
       <div
         style={{
           display: "flex",
@@ -61,16 +68,40 @@ function RepoList({ token, onSelectRepo }) {
               cursor: "pointer",
               transition: "background 0.2s",
             }}
-            onMouseEnter={(e) => (e.target.style.background = "#f0f0f0")}
-            onMouseLeave={(e) => (e.target.style.background = "white")}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.background = "#f0f0f0")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "white")
+            }
           >
-            <h3 style={{ margin: "0 0 5px 0" }}>{repo.name}</h3>
-            <p style={{ margin: "5px 0", color: "#666", fontSize: "14px" }}>
+            <h3 style={{ margin: "0 0 5px 0" }}>
+              {repo.name}
+            </h3>
+
+            <p
+              style={{
+                margin: "5px 0",
+                color: "#666",
+                fontSize: "14px",
+              }}
+            >
               {repo.description || "No description"}
             </p>
-            <div style={{ fontSize: "12px", color: "#888" }}>
-              {repo.language && <span>🔵 {repo.language}</span>}
-              {repo.language && <span> • </span>}
+
+            <div
+              style={{
+                fontSize: "12px",
+                color: "#888",
+              }}
+            >
+              {repo.language && (
+                <>
+                  <span>🔵 {repo.language}</span>
+                  <span> • </span>
+                </>
+              )}
+
               <span>⭐ {repo.stars} stars</span>
             </div>
           </div>

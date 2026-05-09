@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function CommitChart({ token, repo }) {
+function CommitChart({ repo }) {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,16 +20,14 @@ function CommitChart({ token, repo }) {
       setLoading(true);
 
       try {
+        const [owner] = repo.full_name.split("/");
+
         console.log(`🔄 Fetching commits for ${repo.full_name}...`);
 
         const response = await fetch(
-          `http://localhost:3001/api/github/commits/${
-            repo.full_name.split("/")[0]
-          }/${repo.name}`,
+          `http://localhost:3001/api/github/commits/${owner}/${repo.name}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            credentials: "include",
           }
         );
 
@@ -38,18 +36,30 @@ function CommitChart({ token, repo }) {
         }
 
         const data = await response.json();
+
         console.log("✅ Commit data:", data);
-        setChartData(data);
+
+        // Backend returns:
+        // {
+        //   repo,
+        //   total_commits,
+        //   since,
+        //   chart_data
+        // }
+
+        setChartData(data.chart_data || []);
       } catch (error) {
-        console.error("❌ Error:", error);
+        console.error("❌ Error fetching commits:", error);
+        setChartData([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchCommits();
-  }, [token, repo]);
+  }, [repo]);
 
+  // No repository selected
   if (!repo) {
     return (
       <div style={{ marginTop: "30px", textAlign: "center", color: "#666" }}>
@@ -58,10 +68,16 @@ function CommitChart({ token, repo }) {
     );
   }
 
+  // Loading state
   if (loading) {
-    return <div style={{ marginTop: "30px" }}>Loading chart...</div>;
+    return (
+      <div style={{ marginTop: "30px", textAlign: "center" }}>
+        Loading chart...
+      </div>
+    );
   }
 
+  // Empty commits
   if (chartData.length === 0) {
     return (
       <div style={{ marginTop: "30px", textAlign: "center", color: "#666" }}>
@@ -73,12 +89,17 @@ function CommitChart({ token, repo }) {
   return (
     <div style={{ marginTop: "30px" }}>
       <h2>📈 Commit Activity: {repo.name}</h2>
+
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
+
           <XAxis dataKey="date" />
-          <YAxis />
+
+          <YAxis allowDecimals={false} />
+
           <Tooltip />
+
           <Line
             type="monotone"
             dataKey="commits"
@@ -87,6 +108,7 @@ function CommitChart({ token, repo }) {
           />
         </LineChart>
       </ResponsiveContainer>
+
       <p
         style={{
           textAlign: "center",
@@ -95,7 +117,7 @@ function CommitChart({ token, repo }) {
           marginTop: "10px",
         }}
       >
-        Showing last 30 commits
+        Showing commit activity grouped by date
       </p>
     </div>
   );

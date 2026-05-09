@@ -29,6 +29,7 @@ function Callback() {
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify({ code }),
           }
         );

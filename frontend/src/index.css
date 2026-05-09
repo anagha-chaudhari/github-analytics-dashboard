@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
   line-height: 1.6;
@@ -52,6 +54,38 @@ a {
 
 a:hover {
   color: var(--accent-hover);
+}
+
+.repoCard {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 18px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.repoCard:hover {
+  border-color: var(--accent-primary);
+}
+
+.repoCard h3 {
+  margin: 0 0 8px 0;
+}
+
+.repoMeta {
+  display: inline-flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  color: #8b949e;
+  font-size: 0.9rem;
+}
+
+.repoMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 h1,

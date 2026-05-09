@@ -22,7 +22,7 @@ function CommitChart({ repo }) {
       try {
         const [owner] = repo.full_name.split("/");
 
-        console.log(`🔄 Fetching commits for ${repo.full_name}...`);
+        console.log(`Fetching commits for ${repo.full_name}...`);
 
         const response = await fetch(
           `http://localhost:3001/api/github/commits/${owner}/${repo.name}`,
@@ -37,7 +37,7 @@ function CommitChart({ repo }) {
 
         const data = await response.json();
 
-        console.log("✅ Commit data:", data);
+        console.log("Commit data:", data);
 
         // Backend returns:
         // {
@@ -49,7 +49,7 @@ function CommitChart({ repo }) {
 
         setChartData(data.chart_data || []);
       } catch (error) {
-        console.error("❌ Error fetching commits:", error);
+        console.error("Error fetching commits:", error);
         setChartData([]);
       } finally {
         setLoading(false);
@@ -63,7 +63,7 @@ function CommitChart({ repo }) {
   if (!repo) {
     return (
       <div style={{ marginTop: "30px", textAlign: "center", color: "#666" }}>
-        👆 Select a repository above to see commit activity
+        Select a repository above to see commit activity.
       </div>
     );
   }
@@ -88,7 +88,7 @@ function CommitChart({ repo }) {
 
   return (
     <div style={{ marginTop: "30px" }}>
-      <h2>📈 Commit Activity: {repo.name}</h2>
+      <h2>Commit Activity: {repo.name}</h2>
 
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={chartData}>

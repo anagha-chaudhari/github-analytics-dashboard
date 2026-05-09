@@ -26,18 +26,41 @@ function Home() {
       <div style={styles.content}>
         <div style={styles.badge}>
           <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
+            width="56"
+            height="56"
+            viewBox="0 0 64 64"
             fill="none"
-            style={{ marginRight: "8px" }}
+            aria-hidden="true"
           >
+            <circle cx="32" cy="32" r="24" stroke="currentColor" strokeWidth="3" opacity="0.15" />
+            <circle cx="32" cy="10" r="6" fill="#3b82f6">
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                from="0 32 32"
+                to="360 32 32"
+                dur="2.2s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="32" cy="54" r="4" fill="#8b5cf6">
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                from="0 32 32"
+                to="-360 32 32"
+                dur="1.4s"
+                repeatCount="indefinite"
+              />
+            </circle>
             <path
-              d="M8 0L9.854 5.473H15.708L10.927 8.854L12.781 14.327L8 10.946L3.219 14.327L5.073 8.854L0.292 5.473H6.146L8 0Z"
-              fill="currentColor"
+              d="M20 32h24M32 20v24"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              opacity="0.5"
             />
           </svg>
-          Developer Analytics Platform
         </div>
 
         <h1 style={styles.title}>
@@ -71,15 +94,59 @@ function Home() {
 
         <div style={styles.features}>
           <div style={styles.feature}>
-            <div style={styles.featureIcon}>📊</div>
+            <div style={styles.featureIcon}>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 16l4-4 4 4 4-8" />
+                <path d="M4 20h16" />
+              </svg>
+            </div>
             <div style={styles.featureText}>Commit Analytics</div>
           </div>
           <div style={styles.feature}>
-            <div style={styles.featureIcon}>🔍</div>
+            <div style={styles.featureIcon}>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+            </div>
             <div style={styles.featureText}>Repository Insights</div>
           </div>
           <div style={styles.feature}>
-            <div style={styles.featureIcon}>⚡</div>
+            <div style={styles.featureIcon}>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
+              </svg>
+            </div>
             <div style={styles.featureText}>Real-time Updates</div>
           </div>
         </div>

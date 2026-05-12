@@ -119,7 +119,6 @@ NODE_ENV=development
 
 ```bash
 node server.js
-# DevPulse API running on http://localhost:3001
 ```
 
 ### Frontend
@@ -165,6 +164,3 @@ npm run dev
 
 ---
 
-<div align="center">
-  Built to understand what actually goes into a production auth flow.
-</div>
